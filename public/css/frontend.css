@@ -1,0 +1,43 @@
+/******************* Template *******************/
+body {
+    font-family: Century Gothic, Consolas, Arial;
+    width: 100%;
+}
+header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+footer {
+    margin-top: 20px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center;
+}
+div#container {
+    /*border: 2px dotted #000;*/
+}
+/************************************************/
+
+/**************** View solution *****************/
+div.graph_wrapper {
+    width: 100%;
+    height: 450px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+div#result_graph h3, div#result_graph div {
+    padding: 0;
+}
+select#odpairs {
+    margin-top: 20px;
+}
+/************************************************/
+
+/***************** Creation forms *****************/
+form .panel {
+    margin-bottom: 0;
+}
+form .panel-footer {
+    text-align: right;
+}
+/************************************************/

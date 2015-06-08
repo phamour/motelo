@@ -1,0 +1,21 @@
+{
+    "name": "motelo",
+    "description": "MOdelling TEsts LOgger for facilitating the memory of research.",
+    "keywords": ["modelling","research","test","backup","result memory"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yipeng Huang",
+            "email": "huang.ypeng@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "monolog/monolog": "1.*",
+        "slim/slim": "2.*"
+    },
+    "autoload": {
+        "classmap": ["lib/"],
+        "files": ["config/config.php"]
+    }
+}
