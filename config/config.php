@@ -12,9 +12,9 @@ define('DB_FILENAME', 'dev.sqlite');
 
 // Application runtime configurations
 define('STORAGE_DIR',            dirname(__DIR__) . '/storage/');
-define('CREATION_TYPE_MODEL',    'model');
-define('CREATION_TYPE_INSTANCE', 'instance');
-define('CREATION_TYPE_SOLUTION', 'solution');
+define('TYPE_MODEL',    'model');
+define('TYPE_INSTANCE', 'instance');
+define('TYPE_SOLUTION', 'solution');
 
 // Dev configurations
 define('DEBUG', false);

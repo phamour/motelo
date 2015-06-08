@@ -23,24 +23,55 @@ $app->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $app->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 // Define routes
-$app->get('/', function () use ($app) {
+$app->get('/', function() use ($app) {
     $app->redirect('/view');
 });
 
-$app->get('/list/:type', function($type) use ($app) {});
+$app->get('/list/:type', function($type) use ($app) {
+    $app->render('header.php');
+    $app->render('flash.php');
+    switch ($type) {
+        default:
+        case TYPE_SOLUTION:
+            // complex call with joins on model and instance
+            $data = API::getList($app->db, 'solution AS s INNER JOIN model as m, instance as i', array(
+                'fields' => array(
+                    's.*',
+                    'm.label as model_label',
+                    'i.label as instance_label'
+                ),
+                'where' => 's.model_id=m.id and s.instance_id=i.id',
+                'json' => false
+            ));
+            $app->render('list_solution.php', compact('data'));
+            break;
+        case TYPE_INSTANCE:
+            // simple call with all cols
+            $data = API::getList($app->db, 'instance', array('json' => false));
+            $app->render('list_instance.php', compact('data'));
+            break;
+        case TYPE_MODEL:
+            // simple call with all cols
+            $data = API::getList($app->db, 'model', array('json' => false));
+            $app->render('list_model.php', compact('data'));
+            break;
+    }
+    $app->render('jsincludes.php');
+    $app->render('footer.php');
+});
 
 $app->get('/create/:type', function($type) use ($app) {
     $app->render('header.php');
     $app->render('flash.php');
     switch ($type) {
         default:
-        case CREATION_TYPE_SOLUTION:
+        case TYPE_SOLUTION:
             $app->render('creation_solution.php');
             break;
-        case CREATION_TYPE_INSTANCE:
+        case TYPE_INSTANCE:
             $app->render('creation_instance.php');
             break;
-        case CREATION_TYPE_MODEL:
+        case TYPE_MODEL:
             $app->render('creation_model.php');
             break;
     }

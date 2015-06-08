@@ -18,6 +18,13 @@ div#container {
 }
 /************************************************/
 
+span.status_ok {
+    color: #2ecc71;
+}
+span.status_ko {
+    color: #e74c3c;
+}
+
 /**************** View solution *****************/
 div.graph_wrapper {
     width: 100%;

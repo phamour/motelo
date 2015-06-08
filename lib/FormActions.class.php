@@ -7,13 +7,13 @@ class FormActions {
         $values = array();
         switch ($type) {
             default:
-            case CREATION_TYPE_SOLUTION:
+            case TYPE_SOLUTION:
                 $ok = self::createSolution($app, $values);
                 break;
-            case CREATION_TYPE_INSTANCE:
+            case TYPE_INSTANCE:
                 $ok = self::createInstance($app, $values);
                 break;
-            case CREATION_TYPE_MODEL:
+            case TYPE_MODEL:
                 $ok = self::createModel($app, $values);
                 break;
         }
