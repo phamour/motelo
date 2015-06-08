@@ -80,15 +80,42 @@ $app->get('/getsol/:filename', function($filename) use ($app) {
 });
 
 $app->get('/getmodels', function() use ($app) {
-    echo API::getList($app->db, 'model');
+    $args = array(
+        'table'  => 'model',
+        'fields' => 'id, label, filename, created_at',
+        'where'  => 'status=1'
+    );
+    if ($app->request->get('all')) {
+        unset($args['where']);
+    }
+
+    echo json_encode(CRUD::select($app->db, $args));
 });
 
 $app->get('/getinstances', function() use ($app) {
-    echo API::getList($app->db, 'instances');
+    $args = array(
+        'table'  => 'instance',
+        'fields' => 'id, nb_nodes, nb_edges, blockage_o, blockage_d, filename, created_at',
+        'where'  => 'status=1'
+    );
+    if ($app->request->get('all')) {
+        unset($args['where']);
+    }
+
+    echo json_encode(CRUD::select($app->db, $args));
 });
 
 $app->get('/getsolutions', function() use ($app) {
-    echo API::getList($app->db, 'solutions');
+    $args = array(
+        'table' => 'solution',
+        'fields' => 'id, model_id, instance_id, has_solution, z, t, filename, created_at',
+        'where' => 'status=1'
+    );
+    if ($app->request->get('all')) {
+        unset($args['where']);
+    }
+
+    echo json_encode(CRUD::select($app->db, $args));
 });
 
 // Run app
