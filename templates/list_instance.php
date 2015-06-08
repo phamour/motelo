@@ -1,4 +1,5 @@
 <div id="list_instance" class="panel panel-primary">
+    <input type="hidden" id="list_type" value="instance">
     <div class="panel-heading">
         List of instances
     </div>
@@ -27,7 +28,7 @@
                         <td><?= $row['blockage_o'] ?></td>
                         <td><?= $row['blockage_d'] ?></td>
                         <td><?= date('M jS Y gA', strtotime($row['created_at'])) ?></td>
-                        <td class="file"><?= $row['filename'] ?></td>
+                        <td class="file_view"><a href="#"><?= $row['filename'] ?></a></td>
                         <td>
                             <span class="glyphicon glyphicon-<?= $row['status'] ? 'ok status_ok' : 'remove status_ko' ?>" 
                                 aria-hidden="true">
@@ -39,3 +40,5 @@
         </table>
     <?php endif ?>
 </div>
+
+<?php include 'list_modal.php'; ?>

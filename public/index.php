@@ -56,7 +56,9 @@ $app->get('/list/:type', function($type) use ($app) {
             $app->render('list_model.php', compact('data'));
             break;
     }
-    $app->render('jsincludes.php');
+    $app->render('jsincludes.php', array(
+        'scripts' => array('/js/list.js')
+    ));
     $app->render('footer.php');
 });
 
@@ -102,6 +104,28 @@ $app->get('/view', function() use ($app) {
 });
 
 // API
+// TODO: need refactoring
+$app->get('/getcontent/:type/:filename/', function($type, $filename) use ($app) {
+    $path = STORAGE_DIR;
+    $ext = '.txt';
+    switch ($type) {
+        default:
+        case TYPE_SOLUTION:
+            $path .= 'solution/';
+            $ext = '.sol';
+            break;
+        case TYPE_INSTANCE:
+            $path .= 'instance/';
+            $ext = '.dat';
+            break;
+        case TYPE_MODEL:
+            $path .= 'model/';
+            $ext = '.mod';
+            break;
+    }
+    $path .= $filename . $ext;
+    echo file_get_contents($path);
+});
 $app->get('/getdat/:filename', function($filename) use ($app) {
     echo Utils::dat2json(file_get_contents(STORAGE_DIR . $filename . '.dat'));
 });
