@@ -84,11 +84,11 @@ $app->get('/getmodels', function() use ($app) {
 });
 
 $app->get('/getinstances', function() use ($app) {
-    echo API::getList($app->db, 'instances');
+    echo API::getList($app->db, 'instance');
 });
 
 $app->get('/getsolutions', function() use ($app) {
-    echo API::getList($app->db, 'solutions');
+    echo API::getList($app->db, 'solution');
 });
 
 // Run app
