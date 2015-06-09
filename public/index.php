@@ -43,17 +43,17 @@ $app->get('/list/:type', function($type) use ($app) {
                 'where' => 's.model_id=m.id and s.instance_id=i.id',
                 'json' => false
             ));
-            $app->render('list_solution.php', compact('data'));
+            $app->render('list_solution.php', compact('app', 'data'));
             break;
         case TYPE_INSTANCE:
             // simple call with all cols
             $data = API::getList($app->db, 'instance', array('json' => false));
-            $app->render('list_instance.php', compact('data'));
+            $app->render('list_instance.php', compact('app', 'data'));
             break;
         case TYPE_MODEL:
             // simple call with all cols
             $data = API::getList($app->db, 'model', array('json' => false));
-            $app->render('list_model.php', compact('data'));
+            $app->render('list_model.php', compact('app', 'data'));
             break;
     }
     $app->render('jsincludes.php', array(
@@ -86,6 +86,42 @@ $app->get('/create/:type', function($type) use ($app) {
 $app->post('/create/:type', function($type) use ($app) {
     FormActions::create($app, $type);
     $app->redirect('/create/' . $type);
+});
+
+$app->get('/edit/:type/:id', function($type, $id) use ($app) {
+    //var_dump($app->request);die;
+    $data = CRUD::raw($app->db, array(
+        'table' => $type,
+        'where' => 'id=' . $id
+    ));
+    $app->render('header.php');
+    $app->render('flash.php');
+    if (!$data) {
+        Utils::yflash('error', 'Failed to load the data for edit.');
+        $app->redirect('/');
+    } else {
+        switch ($type) {
+            default:
+            case TYPE_SOLUTION:
+                $app->render('creation_solution.php', compact('data'));
+                break;
+            case TYPE_INSTANCE:
+                $app->render('creation_instance.php', compact('data'));
+                break;
+            case TYPE_MODEL:
+                $app->render('creation_model.php', compact('data'));
+                break;
+        }
+    }
+    $app->render('jsincludes.php', array(
+        'scripts' => array('/js/form.js')
+    ));
+    $app->render('footer.php');
+})->name('edit');
+
+$app->post('/edit/:type/:id', function($type, $id) use ($app) {
+    FormActions::update($app, $type);
+    $app->redirect('/list/' . $type);
 });
 
 $app->get('/view', function() use ($app) {

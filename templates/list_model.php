@@ -30,7 +30,7 @@
                             </span>
                         </td>
                         <td>
-                            <a class="list_action action_edit" title="edit" href="#">
+                            <a class="list_action action_edit" title="edit" href="<?= $app->urlFor('edit', array('type' => 'model', 'id' => $row['id'])) ?>">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             </a>
                             <a class="list_action action_delete" title="delete" href="#">

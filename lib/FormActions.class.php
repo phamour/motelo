@@ -8,13 +8,13 @@ class FormActions {
         switch ($type) {
             default:
             case TYPE_SOLUTION:
-                $ok = self::createSolution($app, $values);
+                $ok = self::storeSolution('create', $app, $values);
                 break;
             case TYPE_INSTANCE:
-                $ok = self::createInstance($app, $values);
+                $ok = self::storeInstance('create', $app, $values);
                 break;
             case TYPE_MODEL:
-                $ok = self::createModel($app, $values);
+                $ok = self::storeModel('create', $app, $values);
                 break;
         }
 
@@ -33,7 +33,36 @@ class FormActions {
         }
     }
 
-    private static function createSolution($app, &$values) {
+    public static function update($app, $type) {
+        $id = null;
+        $values = array();
+        switch ($type) {
+            default:
+            case TYPE_SOLUTION:
+                $id = $app->request->post('solution_id');
+                self::storeSolution('update', $app, $values);
+                break;
+            case TYPE_INSTANCE:
+                $id = $app->request->post('instance_id');
+                self::storeInstance('update', $app, $values);
+                break;
+            case TYPE_MODEL:
+                $id = $app->request->post('model_id');
+                self::storeModel('update', $app, $values);
+                break;
+        }
+
+        // update
+        if (CRUD::update($app->db, $type, $id, $values) == false) {
+            Utils::yflash('error', 'Failed to update ' . $type . '.');
+            return false;
+        } else {
+            Utils::yflash('success', ucfirst($type) . ' updated successfully.');
+            return true;
+        }
+    }
+
+    private static function storeSolution($type, $app, &$values) {
         // prepare
         $values = array(
             'model_id'    => $app->request->post('solution_model_id'),
@@ -46,6 +75,11 @@ class FormActions {
             $values['t'] = $app->request->post('solution_t');
         }
 
+        if ($type === 'update') {
+            unset($values['created_at']);
+            return true;
+        }
+
         if (!Uploader::upload('solution', 'solution_file', $_FILES)) {
             return false;
         } else {
@@ -54,18 +88,27 @@ class FormActions {
         }
     }
 
-    private static function createInstance($app, &$values) {
+    private static function storeInstance($type, $app, &$values) {
         // prepare
         $values = array(
             'nb_nodes'   => $app->request->post('instance_nb_nodes'),
             'nb_edges'   => $app->request->post('instance_nb_edges'),
             'created_at' => date('Y-m-d H:i:s')
         );
+        $label = 'v' . $values['nb_nodes'] . '_e' . $values['nb_edges'];
         if ($app->request->post('instance_blockage_o') !== '') {
             $values['blockage_o'] = $app->request->post('instance_blockage_o');
+            $label .= '_o' . $values['blockage_o'];
         }
         if ($app->request->post('instance_blockage_d') !== '') {
             $values['blockage_d'] = $app->request->post('instance_blockage_d');
+            $label .= '_d' . $values['blockage_d'];
+        }
+        $values['label'] = $label;
+
+        if ($type === 'update') {
+            unset($values['created_at']);
+            return true;
         }
 
         if (!Uploader::upload('instance', 'instance_file', $_FILES)) {
@@ -76,12 +119,18 @@ class FormActions {
         }
     }
 
-    private static function createModel($app, &$values) {
+    private static function storeModel($type, $app, &$values) {
         // prepare
         $values = array(
             'label'      => $app->request->post('model_label'),
             'created_at' => date('Y-m-d H:i:s')
         );
+
+        if ($type === 'update') {
+            unset($values['created_at']);
+            return true;
+        }
+
         if (Uploader::upload('model', 'model_file', $_FILES)) {
             $values['filename'] = preg_replace('/(\.mod)|(\.txt)/', '', $_FILES['model_file']['name']);
         }

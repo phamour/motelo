@@ -2,7 +2,7 @@
 
 class CRUD {
 
-    public static function insert(PDO $db, $tablename, array $values) {
+    private static function preStore(PDO $db, $values) {
         if (empty($values)) {
             return false;
         }
@@ -16,15 +16,37 @@ class CRUD {
             $values[$i] = $db->quote((string) $value);
         }
 
+        return array(
+            'fields' => $fields,
+            'values' => $values
+        );
+    }
+
+    public static function insert(PDO $db, $tablename, array $values) {
+        $data = self::preStore($db, $values);
+        if (!$data) {
+            return false;
+        }
+
         // construct
         $sql = "INSERT INTO " . $tablename . 
-            '(' . implode(',', $fields) . ') ' . 
-            'VALUES (' . implode(',', $values) . ')';
+            '(' . implode(',', $data['fields']) . ') ' . 
+            'VALUES (' . implode(',', $data['values']) . ')';
         
         if ($db->exec($sql) === 1) {
             return $db->lastInsertId();
         } else {
             return false;
+        }
+    }
+
+    public static function raw($db, $args) {
+        $args['limit'] = 1;
+        $result = self::select($db, $args);
+        if (empty($result)) {
+            return false;
+        } else {
+            return $result[0];
         }
     }
 
@@ -54,6 +76,25 @@ class CRUD {
         $statement = $db->query($sql);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         return $statement->fetchAll();
+    }
+
+    public static function update(PDO $db, $tablename, $id, array $values) {
+        $data = self::preStore($db, $values);
+        if (!$data) {
+            return false;
+        }
+
+        $sql = 'UPDATE ' . $tablename . ' ' . 
+            'SET ' . implode(',', array_map(function($k, $v) {
+                    return $k . '=' . $v;
+                }, $data['fields'], $data['values'])) . ' ' . 
+            'WHERE id=' . $id;
+
+        if ($db->exec($sql) === 1) {
+            return $id;
+        } else {
+            return false;
+        }
     }
 }
 
