@@ -120,7 +120,7 @@ $app->get('/edit/:type/:id', function($type, $id) use ($app) {
 })->name('edit');
 
 $app->put('/edit/:type/:id', function($type, $id) use ($app) {
-    FormActions::update($app, $type);
+    FormActions::update($app, $type, $id);
     $app->redirect('/list/' . $type);
 });
 

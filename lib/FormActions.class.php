@@ -33,21 +33,17 @@ class FormActions {
         }
     }
 
-    public static function update($app, $type) {
-        $id = null;
+    public static function update($app, $type, $id) {
         $values = array();
         switch ($type) {
             default:
             case TYPE_SOLUTION:
-                $id = $app->request->post('solution_id');
                 self::storeSolution('update', $app, $values);
                 break;
             case TYPE_INSTANCE:
-                $id = $app->request->post('instance_id');
                 self::storeInstance('update', $app, $values);
                 break;
             case TYPE_MODEL:
-                $id = $app->request->post('model_id');
                 self::storeModel('update', $app, $values);
                 break;
         }
