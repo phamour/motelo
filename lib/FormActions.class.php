@@ -58,6 +58,16 @@ class FormActions {
         }
     }
 
+    public static function delete($app, $type, $id) {
+        if (CRUD::softDelete($app->db, $type, $id) == false) {
+            Utils::yflash('error', 'Failed to delete ' . $type . '.');
+            return false;
+        } else {
+            Utils::yflash('success', ucfirst($type) . ' deleted successfully.');
+            return true;
+        }
+    }
+
     private static function storeSolution($type, $app, &$values) {
         // prepare
         $values = array(

@@ -40,7 +40,7 @@ $app->get('/list/:type', function($type) use ($app) {
                     'm.label as model_label',
                     'i.label as instance_label'
                 ),
-                'where' => 's.model_id=m.id and s.instance_id=i.id',
+                'where' => 's.model_id=m.id and s.instance_id=i.id and s.status=1',
                 'json' => false
             ));
             $app->render('list_solution.php', compact('app', 'data'));
@@ -123,6 +123,11 @@ $app->put('/edit/:type/:id', function($type, $id) use ($app) {
     FormActions::update($app, $type, $id);
     $app->redirect('/list/' . $type);
 });
+
+$app->delete('/delete/:type/:id', function($type, $id) use ($app) {
+    FormActions::delete($app, $type, $id);
+    $app->redirect('/list/' . $type);
+})->name('delete');
 
 $app->get('/view', function() use ($app) {
     $app->render('header.php');

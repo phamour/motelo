@@ -28,6 +28,9 @@ span.status_ko {
 a.list_action {
     margin-right: 5px;
 }
+form.list_action {
+    display: inline;
+}
 /************************************************/
 
 /**************** View solution *****************/

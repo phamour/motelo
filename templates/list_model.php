@@ -30,12 +30,17 @@
                             </span>
                         </td>
                         <td>
-                            <a class="list_action action_edit" title="edit" href="<?= $app->urlFor('edit', array('type' => 'model', 'id' => $row['id'])) ?>">
+                            <a class="list_action action_edit btn btn-default" role="button" title="edit" href="<?= 
+                                $app->urlFor('edit', array('type' => 'model', 'id' => $row['id'])) ?>">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                             </a>
-                            <a class="list_action action_delete" title="delete" href="#">
-                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            </a>
+                            <form class="list_action" method="post" action="<?= 
+                                $app->urlFor('delete', array('type' => 'model', 'id' => $row['id'])) ?>">
+                                <input type="hidden" name="_METHOD" value="DELETE">
+                                <button class="btn btn-default" title="delete">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach ?>
