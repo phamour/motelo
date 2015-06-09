@@ -1,3 +1,5 @@
+<input type="hidden" id="instance_url" value="<?= $data['instance_url'] ?>">
+<input type="hidden" id="solution_url" value="<?= $data['url'] ?>">
 <div id="test_case" class="col-md-4">
     <h3>Tested graph:</h3>
     <div class="graph_wrapper"></div>

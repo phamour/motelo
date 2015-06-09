@@ -65,11 +65,16 @@ var resultgraph = {
 var cyTestgraph, cyResultgraph;
 
 $.ajax({
-    url: '/getdat/v5_e8',
+    url: $('#instance_url').val(),
     dataType: 'json',
     type: 'GET',
     async: false,
     success: function(dat) {
+        // display instance file content
+        if ($('#instance_content') !== undefined) {
+            $('textarea', $('#instance_content')).val(dat.content);
+        }
+
         testgraph.metadata.n = dat.n;
         testgraph.metadata.m = dat.m;
         testgraph.metadata.O = dat.O;
@@ -117,39 +122,41 @@ $.ajax({
     }
 });
 
-$.ajax({
-    url: '/getsol/ODS_v5_e8_1433109132788',
-    dataType: 'json',
-    type: 'GET',
-    async: false,
-    success: function(sol) {
-        // display solution file content
-        $('textarea', $('#result_content')).val(sol.content);
+if ($('#result_graph') !== undefined) {
+    $.ajax({
+        url: $('#solution_url').val(),
+        dataType: 'json',
+        type: 'GET',
+        async: false,
+        success: function(sol) {
+            // display solution file content
+            $('textarea', $('#result_content')).val(sol.content);
 
-        // create cytoscape graph
-        cyResultgraph = cytoscape({
-            container: document.getElementById('result_graph')
-                .getElementsByClassName('graph_wrapper')[0],
-            style: cyStyle,
-            elements: resultgraph,
-            layout: {
-                name: 'grid'
-            }
-        });
+            // create cytoscape graph
+            cyResultgraph = cytoscape({
+                container: document.getElementById('result_graph')
+                    .getElementsByClassName('graph_wrapper')[0],
+                style: cyStyle,
+                elements: resultgraph,
+                layout: {
+                    name: 'grid'
+                }
+            });
 
-        // highlight blockage
-        cyResultgraph.getElementById(resultgraph.metadata.blockage[0] + '-' + resultgraph.metadata.blockage[1])
-            .addClass('blockage');
+            // highlight blockage
+            cyResultgraph.getElementById(resultgraph.metadata.blockage[0] + '-' + resultgraph.metadata.blockage[1])
+                .addClass('blockage');
 
-        // highlight reversals
-        if (sol.x.length > 0) {
-            for (var i = 0; i < sol.x.length; i++) {
-                cyResultgraph.getElementById(sol.x[i][0] + '-' + sol.x[i][1])
-                    .removeClass('normal_edge')
-                    .addClass('reversal');
+            // highlight reversals
+            if (sol.x.length > 0) {
+                for (var i = 0; i < sol.x.length; i++) {
+                    cyResultgraph.getElementById(sol.x[i][0] + '-' + sol.x[i][1])
+                        .removeClass('normal_edge')
+                        .addClass('reversal');
+                }
             }
         }
-    }
-});
+    });
+}
 
 // END /public/js/view.js

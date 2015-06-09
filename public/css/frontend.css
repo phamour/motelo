@@ -18,12 +18,20 @@ div#container {
 }
 /************************************************/
 
+/********************* List *********************/
 span.status_ok {
     color: #2ecc71;
 }
 span.status_ko {
     color: #e74c3c;
 }
+a.list_action {
+    margin-right: 5px;
+}
+form.list_action {
+    display: inline;
+}
+/************************************************/
 
 /**************** View solution *****************/
 div.graph_wrapper {

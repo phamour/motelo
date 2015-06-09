@@ -2,7 +2,8 @@
 
 class CRUD {
 
-    public static function insert(PDO $db, $tablename, array $values) {
+    // Check and dispatch for C & U
+    private static function preStore(PDO $db, $values) {
         if (empty($values)) {
             return false;
         }
@@ -16,10 +17,23 @@ class CRUD {
             $values[$i] = $db->quote((string) $value);
         }
 
+        return array(
+            'fields' => $fields,
+            'values' => $values
+        );
+    }
+
+    // C
+    public static function insert(PDO $db, $tablename, array $values) {
+        $data = self::preStore($db, $values);
+        if (!$data) {
+            return false;
+        }
+
         // construct
         $sql = "INSERT INTO " . $tablename . 
-            '(' . implode(',', $fields) . ') ' . 
-            'VALUES (' . implode(',', $values) . ')';
+            '(' . implode(',', $data['fields']) . ') ' . 
+            'VALUES (' . implode(',', $data['values']) . ')';
         
         if ($db->exec($sql) === 1) {
             return $db->lastInsertId();
@@ -28,6 +42,18 @@ class CRUD {
         }
     }
 
+    // R
+    public static function raw($db, $args) {
+        $args['limit'] = 1;
+        $result = self::select($db, $args);
+        if (empty($result)) {
+            return false;
+        } else {
+            return $result[0];
+        }
+    }
+
+    // R
     public static function select($db, $args) {
         $default = array(
             'table'    => '',
@@ -54,6 +80,36 @@ class CRUD {
         $statement = $db->query($sql);
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         return $statement->fetchAll();
+    }
+
+    // U
+    public static function update(PDO $db, $tablename, $id, array $values) {
+        $data = self::preStore($db, $values);
+        if (!$data) {
+            return false;
+        }
+
+        $sql = 'UPDATE ' . $tablename . ' ' . 
+            'SET ' . implode(',', array_map(function($k, $v) {
+                    return $k . '=' . $v;
+                }, $data['fields'], $data['values'])) . ' ' . 
+            'WHERE id=' . $id;
+
+        if ($db->exec($sql) === 1) {
+            return $id;
+        } else {
+            return false;
+        }
+    }
+
+    // D
+    // NOTE: strictly do soft delete for the reason of history keeping
+    public static function softDelete(PDO $db, $tablename, $id) {
+        $sql = 'UPDATE ' . $tablename . ' ' . 
+            'SET status=0 ' . 
+            'WHERE id=' . $id;
+
+        return $db->exec($sql) === 1;
     }
 }
 

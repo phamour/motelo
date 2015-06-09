@@ -1,35 +1,41 @@
 // model label list
 if ($('#solution_model_id') !== undefined) {
+    var model_id = $('#solution_model_id').attr('value') === '' 
+        ? '-1' 
+        : $('#solution_model_id').attr('value');
+
     $.ajax({
         url: '/getmodels',
         dataType: 'json',
         type: 'GET',
         success: function(models) {
-            $.each(models, function(i, model) {
+            for (var i = 0; i < models.length; i++) {
                 $('#solution_model_id').append(
-                    '<option value="' + model.id + '">' + model.label + '</option>'
+                    '<option value="' + models[i].id + '">' + models[i].label + '</option>'
                 );
-            });
+            }
+            $('#solution_model_id').val(model_id);
         }
     });
 }
 
 // model label list
 if ($('#solution_instance_id') !== undefined) {
+    var instance_id = $('#solution_instance_id').attr('value') === '' 
+        ? '-1' 
+        : $('#solution_instance_id').attr('value');
+
     $.ajax({
         url: '/getinstances',
         dataType: 'json',
         type: 'GET',
         success: function(instances) {
-            $.each(instances, function(i, instance) {
-                var label = 'v' + instance.nb_nodes + '_e' + instance.nb_edges;
-                if (instance.blockage_o !== undefined && instance.blockage_d !== undefined) {
-                    label += '_o' + instance.blockage_o + '_d' + instance.blockage_d;
-                }
+            for (var i = 0; i < instances.length; i++) {
                 $('#solution_instance_id').append(
-                    '<option value="' + instance.id + '">' + label + '</option>'
+                    '<option value="' + instances[i].id + '">' + instances[i].label + '</option>'
                 );
-            });
+            }
+            $('#solution_instance_id').val(instance_id);
         }
     });
 }
