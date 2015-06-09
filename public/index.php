@@ -141,8 +141,8 @@ $app->get('/view/:type/:id', function($type, $id) use ($app) {
                     's.*',
                     'i.filename as instance_filename'
                 ),
-                'where' => 's.instance_id=i.id and s.id=' . $id,
-                'json' => false
+                'where'  => 's.instance_id=i.id and s.id=' . $id,
+                'json'   => false
             ));
             $data['instance_url'] = $app->urlFor('getdat', array('filename' => $data['instance_filename']));
             $data['url'] = $app->urlFor('getsol', array('filename' => $data['filename']));
@@ -150,7 +150,11 @@ $app->get('/view/:type/:id', function($type, $id) use ($app) {
             break;
         case TYPE_INSTANCE:
             // simple call with all cols
-            $data = API::getOne($app->db, 'instance', array('json' => false));
+            $data = API::getOne($app->db, 'instance', array(
+                'where' => 'id=' . $id,
+                'json'  => false
+            ));
+            $data['url'] = $app->urlFor('getdat', array('filename' => $data['filename']));
             $app->render('view_instance.php', compact('app', 'data'));
             break;
     }

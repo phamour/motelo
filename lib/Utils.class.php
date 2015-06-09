@@ -30,6 +30,9 @@ class Utils {
         // remove comments
         $source = self::removeComments($source);
 
+        // keep the content in form
+        $content = $source;
+
         // strip white-spaces and line-ends
         $source = preg_replace('/[\s\n\r]+/', '', $source);
 
@@ -45,8 +48,11 @@ class Utils {
         $source = preg_replace('/"arcs":{([<>0-9,]+)}/', '"arcs":[${1}]', $source);
         $source = preg_replace('/<([0-9]+,[0-9]+,[0-9.]+)>/', '[${1}]', $source);
 
+        $data = json_decode('{' . $source . '}', true);
+        $data['content'] = $content;
+
         // encap to json object
-        return '{' . $source . '}';
+        return json_encode($data);
     }
 
     public static function sol2json($source) {
