@@ -119,7 +119,7 @@ $app->get('/edit/:type/:id', function($type, $id) use ($app) {
     $app->render('footer.php');
 })->name('edit');
 
-$app->post('/edit/:type/:id', function($type, $id) use ($app) {
+$app->put('/edit/:type/:id', function($type, $id) use ($app) {
     FormActions::update($app, $type);
     $app->redirect('/list/' . $type);
 });

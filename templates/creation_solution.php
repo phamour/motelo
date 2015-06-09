@@ -1,5 +1,8 @@
 <form id="creation_solution" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="solution_id" value="<?php if (isset($data['id'])) echo $data['id']; ?>">
+    <?php if (isset($data['id'])): ?>
+        <input type="hidden" name="solution_id" value="<?= $data['id'] ?>">
+        <input type="hidden" name="_METHOD" value="PUT">
+    <?php endif ?>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <?= isset($data['id']) ? 'Edit' : 'Create  a' ?> solution
