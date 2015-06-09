@@ -42,7 +42,8 @@
                             </span>
                         </td>
                         <td>
-                            <a class="list_action action_view btn btn-default" role="button" title="view" href="#">
+                            <a class="list_action action_view btn btn-default" role="button" title="view" href="<?= 
+                                $app->urlFor('view', array('type' => 'solution', 'id' => $row['id'])) ?>">
                                 <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
                             </a>
                             <a class="list_action action_edit btn btn-default" role="button" title="edit" href="<?= 

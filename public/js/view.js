@@ -65,7 +65,7 @@ var resultgraph = {
 var cyTestgraph, cyResultgraph;
 
 $.ajax({
-    url: '/getdat/v5_e8',
+    url: $('#instance_url').val(),
     dataType: 'json',
     type: 'GET',
     async: false,
@@ -118,7 +118,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: '/getsol/ODS_v5_e8_1433109132788',
+    url: $('#solution_url').val(),
     dataType: 'json',
     type: 'GET',
     async: false,

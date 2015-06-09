@@ -24,7 +24,7 @@ $app->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
 // Define routes
 $app->get('/', function() use ($app) {
-    $app->redirect('/view');
+    $app->redirectTo('list', array('type' => 'solution'));
 });
 
 $app->get('/list/:type', function($type) use ($app) {
@@ -60,7 +60,7 @@ $app->get('/list/:type', function($type) use ($app) {
         'scripts' => array('/js/list.js')
     ));
     $app->render('footer.php');
-});
+})->name('list');
 
 $app->get('/create/:type', function($type) use ($app) {
     $app->render('header.php');
@@ -129,10 +129,31 @@ $app->delete('/delete/:type/:id', function($type, $id) use ($app) {
     $app->redirect('/list/' . $type);
 })->name('delete');
 
-$app->get('/view', function() use ($app) {
+$app->get('/view/:type/:id', function($type, $id) use ($app) {
     $app->render('header.php');
     $app->render('flash.php');
-    $app->render('view.php');
+    switch ($type) {
+        default:
+        case TYPE_SOLUTION:
+            // complex call with joins on model and instance
+            $data = API::getOne($app->db, 'solution AS s INNER JOIN instance as i', array(
+                'fields' => array(
+                    's.*',
+                    'i.filename as instance_filename'
+                ),
+                'where' => 's.instance_id=i.id and s.id=' . $id,
+                'json' => false
+            ));
+            $data['instance_url'] = $app->urlFor('getdat', array('filename' => $data['instance_filename']));
+            $data['url'] = $app->urlFor('getsol', array('filename' => $data['filename']));
+            $app->render('view_solution.php', compact('app', 'data'));
+            break;
+        case TYPE_INSTANCE:
+            // simple call with all cols
+            $data = API::getOne($app->db, 'instance', array('json' => false));
+            $app->render('view_instance.php', compact('app', 'data'));
+            break;
+    }
     $app->render('jsincludes.php', array(
         'libs'    => array(
             '/js/lib/cytoscape.min.js'
@@ -142,7 +163,7 @@ $app->get('/view', function() use ($app) {
         )
     ));
     $app->render('footer.php');
-});
+})->name('view');
 
 // API
 // TODO: need refactoring
@@ -167,13 +188,14 @@ $app->get('/getcontent/:type/:filename/', function($type, $filename) use ($app) 
     $path .= $filename . $ext;
     echo file_get_contents($path);
 });
+
 $app->get('/getdat/:filename', function($filename) use ($app) {
-    echo Utils::dat2json(file_get_contents(STORAGE_DIR . $filename . '.dat'));
-});
+    echo Utils::dat2json(file_get_contents(STORAGE_DIR . 'instance/' . $filename . '.dat'));
+})->name('getdat');
 
 $app->get('/getsol/:filename', function($filename) use ($app) {
-    echo Utils::sol2json(file_get_contents(STORAGE_DIR . $filename . '.sol'));
-});
+    echo Utils::sol2json(file_get_contents(STORAGE_DIR . 'solution/' . $filename . '.sol'));
+})->name('getsol');;
 
 $app->get('/getmodels', function() use ($app) {
     echo API::getList($app->db, 'model');
