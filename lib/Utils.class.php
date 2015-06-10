@@ -3,9 +3,10 @@
 class Utils {
 
     public static function yflash($key, $value) {
-        if (isset($_SESSION['y.flash'])) {
-            $_SESSION['y.flash'][$key] = $value;
+        if (!isset($_SESSION['y.flash'])) {
+            $_SESSION['y.flash'] = array();
         }
+        $_SESSION['y.flash'][$key] = $value;
     }
 
     public static function renderLayout($app, $body, $bodyParams = array(), $jsParams = array()) {
