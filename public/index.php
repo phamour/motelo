@@ -31,15 +31,7 @@ $app->get('/list/:type', function($type) use ($app) {
     $data = array();
     if ($type === TYPE_SOLUTION) {
         // complex call with joins on model and instance
-        $data = API::getList($app->db, 'solution AS s INNER JOIN model as m, instance as i', array(
-            'fields' => array(
-                's.*',
-                'm.label as model_label',
-                'i.label as instance_label'
-            ),
-            'where' => 's.model_id=m.id and s.instance_id=i.id and s.status=1',
-            'json' => false
-        ));
+        $data = API::getSolutionList($app->db, array('json' => false));
     } else {
         // simple call with all cols
         $data = API::getList($app->db, $type, array('json' => false));
@@ -67,10 +59,7 @@ $app->post('/create/:type', function($type) use ($app) {
 
 $app->get('/edit/:type/:id', function($type, $id) use ($app) {
     //var_dump($app->request);die;
-    $data = API::getOne($app->db, $type, array(
-        'where' => 'id=' . $id,
-        'json'  => false
-    ));
+    $data = API::getOneById($app->db, $type, $id, array('json'  => false));
     if (!$data) {
         Utils::yflash('error', 'Failed to load the data for edit.');
         $app->redirect('/');
@@ -98,23 +87,13 @@ $app->get('/view/:type/:id', function($type, $id) use ($app) {
         default:
         case TYPE_SOLUTION:
             // complex call with joins on model and instance
-            $data = API::getOne($app->db, 'solution AS s INNER JOIN instance as i', array(
-                'fields' => array(
-                    's.*',
-                    'i.filename as instance_filename'
-                ),
-                'where'  => 's.instance_id=i.id and s.id=' . $id,
-                'json'   => false
-            ));
+            $data = API::getOneSolution($app->db, $id, array('json' => false));
             $data['instance_url'] = $app->urlFor('getdat', array('filename' => $data['instance_filename']));
             $data['url'] = $app->urlFor('getsol', array('filename' => $data['filename']));
             break;
         case TYPE_INSTANCE:
             // simple call with all cols
-            $data = API::getOne($app->db, 'instance', array(
-                'where' => 'id=' . $id,
-                'json'  => false
-            ));
+            $data = API::getOneById($app->db, 'instance', $id, array('json'  => false));
             $data['url'] = $app->urlFor('getdat', array('filename' => $data['filename']));
             break;
     }
@@ -155,7 +134,7 @@ $app->get('/getinstances', function() use ($app) {
 });
 
 $app->get('/getsolutions', function() use ($app) {
-    echo API::getList($app->db, 'solution');
+    echo API::getSolutionList($app->db);
 });
 
 // Run app

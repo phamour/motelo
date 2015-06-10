@@ -22,8 +22,43 @@ class API {
         );
     }
 
+    private static function getSolutionArgs() {
+        return array(
+            'table' => 'solution AS s INNER JOIN model AS m, instance AS i',
+            'fields' => implode(',', array(
+                's.*',
+                'm.label AS model_label',
+                'm.filename AS model_filename',
+                'i.label AS instance_label',
+                'i.filename AS instance_filename'
+            )),
+            'where' => 's.model_id=m.id AND s.instance_id=i.id AND s.status=1'
+        );
+    }
+
     public static function getOne(PDO $db, $type, $options = array()) {
         $args = self::preGet($type, $options);
+
+        // query
+        $result = CRUD::raw($db, $args);
+        if ($options['json']) $result= json_encode($result);
+
+        return $result;
+    }
+
+    public static function getOneById(PDO $db, $type, $id, $options = array()) {
+        if (!isset($options['where']) || $options['where'] === '') {
+            $options['where'] = 'id=' . $id;
+        } else {
+            $options['where'] .= ' AND id=' . $id;
+        }
+        return self::getOne($db, $type, $options);
+    }
+
+    public static function getOneSolution(PDO $db, $id, $options = array()) {
+        self::preGet('solution', $options);
+        $args = self::getSolutionArgs();
+        $args['where'] .= ' AND s.id=' . $id;
 
         // query
         $result = CRUD::raw($db, $args);
@@ -40,6 +75,17 @@ class API {
         if ($options['json']) $results = json_encode($results);
 
         return $results;
+    }
+
+    public static function getSolutionList(PDO $db, $options = array()) {
+        self::preGet('solution', $options);
+        $args = self::getSolutionArgs();
+
+        // query
+        $result = CRUD::select($db, $args);
+        if ($options['json']) $result= json_encode($result);
+
+        return $result;
     }
 
     public static function getFileContent($type, $filename) {
