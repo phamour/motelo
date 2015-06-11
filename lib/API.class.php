@@ -1,8 +1,9 @@
 <?php
 
-class API {
-
-    private static function preGet($type, &$options) {
+class API
+{
+    private static function preGet($type, &$options)
+    {
         $default = array(
             'fields' => '*',
             'where'  => 'status=1',
@@ -14,7 +15,8 @@ class API {
         return self::getArgs($type, $options);
     }
 
-    private static function getArgs($type, $options) {
+    private static function getArgs($type, $options)
+    {
         return array(
             'table'  => $type,
             'fields' => is_array($options['fields']) ? implode(',', $options['fields']) : $options['fields'],
@@ -22,7 +24,8 @@ class API {
         );
     }
 
-    private static function getSolutionArgs() {
+    private static function getSolutionArgs()
+    {
         return array(
             'table' => 'solution AS s INNER JOIN model AS m, instance AS i',
             'fields' => implode(',', array(
@@ -36,17 +39,21 @@ class API {
         );
     }
 
-    public static function getOne(PDO $db, $type, $options = array()) {
+    public static function getOne(PDO $db, $type, $options = array())
+    {
         $args = self::preGet($type, $options);
 
         // query
         $result = CRUD::raw($db, $args);
-        if ($options['json']) $result= json_encode($result);
+        if ($options['json']) {
+            $result= json_encode($result);
+        }
 
         return $result;
     }
 
-    public static function getOneById(PDO $db, $type, $id, $options = array()) {
+    public static function getOneById(PDO $db, $type, $id, $options = array())
+    {
         if (!isset($options['where']) || $options['where'] === '') {
             $options['where'] = 'id=' . $id;
         } else {
@@ -55,40 +62,50 @@ class API {
         return self::getOne($db, $type, $options);
     }
 
-    public static function getOneSolution(PDO $db, $id, $options = array()) {
+    public static function getOneSolution(PDO $db, $id, $options = array())
+    {
         self::preGet('solution', $options);
         $args = self::getSolutionArgs();
         $args['where'] .= ' AND s.id=' . $id;
 
         // query
         $result = CRUD::raw($db, $args);
-        if ($options['json']) $result= json_encode($result);
+        if ($options['json']) {
+            $result= json_encode($result);
+        }
 
         return $result;
     }
 
-    public static function getList(PDO $db, $type, $options = array()) {
+    public static function getList(PDO $db, $type, $options = array())
+    {
         $args = self::preGet($type, $options);
 
         // query
         $results = CRUD::select($db, $args);
-        if ($options['json']) $results = json_encode($results);
+        if ($options['json']) {
+            $results = json_encode($results);
+        }
 
         return $results;
     }
 
-    public static function getSolutionList(PDO $db, $options = array()) {
+    public static function getSolutionList(PDO $db, $options = array())
+    {
         self::preGet('solution', $options);
         $args = self::getSolutionArgs();
 
         // query
         $result = CRUD::select($db, $args);
-        if ($options['json']) $result= json_encode($result);
+        if ($options['json']) {
+            $result= json_encode($result);
+        }
 
         return $result;
     }
 
-    public static function getFileContent($type, $filename) {
+    public static function getFileContent($type, $filename)
+    {
         $ext = '.txt';
         switch ($type) {
             default:
@@ -106,7 +123,8 @@ class API {
         return file_get_contents($path);
     }
 
-    private static function removeComments($source) {
+    private static function removeComments($source)
+    {
         if (!$source) {
             return '{}';
         }
@@ -120,7 +138,8 @@ class API {
         return $source;
     }
 
-    public static function dat2json($source) {
+    public static function dat2json($source)
+    {
         if (!$source) {
             return '{}';
         }
@@ -153,7 +172,8 @@ class API {
         return json_encode($data);
     }
 
-    public static function sol2json($source) {
+    public static function sol2json($source)
+    {
         if (!$source) {
             return '{}';
         }
@@ -178,7 +198,8 @@ class API {
         ));
     }
 
-    private static function parseSol($source, $key, $dimension = 2) {
+    private static function parseSol($source, $key, $dimension = 2)
+    {
         // construct RegEx pattern
         $pattern = '/' . $key;
         for ($i = 0; $i < $dimension; $i++) {
@@ -206,7 +227,6 @@ class API {
         }
         return $result;
     }
-
 }
 
 // END /lib/API.class.php

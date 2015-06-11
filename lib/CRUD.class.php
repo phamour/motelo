@@ -1,9 +1,10 @@
 <?php
 
-class CRUD {
-
+class CRUD
+{
     // Check and dispatch for C & U
-    private static function preStore(PDO $db, $values) {
+    private static function preStore(PDO $db, $values)
+    {
         if (empty($values)) {
             return false;
         }
@@ -24,7 +25,8 @@ class CRUD {
     }
 
     // C
-    public static function insert(PDO $db, $tablename, array $values) {
+    public static function insert(PDO $db, $tablename, array $values)
+    {
         $data = self::preStore($db, $values);
         if (!$data) {
             return false;
@@ -43,7 +45,8 @@ class CRUD {
     }
 
     // R
-    public static function raw($db, $args) {
+    public static function raw($db, $args)
+    {
         $args['limit'] = 1;
         $result = self::select($db, $args);
         if (empty($result)) {
@@ -54,7 +57,8 @@ class CRUD {
     }
 
     // R
-    public static function select($db, $args) {
+    public static function select($db, $args)
+    {
         $default = array(
             'table'    => '',
             'distinct' => false,
@@ -83,7 +87,8 @@ class CRUD {
     }
 
     // U
-    public static function update(PDO $db, $tablename, $id, array $values) {
+    public static function update(PDO $db, $tablename, $id, array $values)
+    {
         $data = self::preStore($db, $values);
         if (!$data) {
             return false;
@@ -104,7 +109,8 @@ class CRUD {
 
     // D
     // NOTE: strictly do soft delete for the reason of history keeping
-    public static function softDelete(PDO $db, $tablename, $id) {
+    public static function softDelete(PDO $db, $tablename, $id)
+    {
         $sql = 'UPDATE ' . $tablename . ' ' . 
             'SET status=0 ' . 
             'WHERE id=' . $id;
