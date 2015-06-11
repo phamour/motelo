@@ -1,8 +1,9 @@
 <?php
 
-class FormActions {
-
-    public static function create($app, $type) {
+class FormActions
+{
+    public static function create($app, $type)
+    {
         $ok = true;
         $values = array();
         switch ($type) {
@@ -33,7 +34,8 @@ class FormActions {
         }
     }
 
-    public static function update($app, $type, $id) {
+    public static function update($app, $type, $id)
+    {
         $values = array();
         switch ($type) {
             default:
@@ -58,7 +60,8 @@ class FormActions {
         }
     }
 
-    public static function delete($app, $type, $id) {
+    public static function delete($app, $type, $id)
+    {
         if (CRUD::softDelete($app->db, $type, $id) == false) {
             Utils::yflash('error', 'Failed to delete ' . $type . '.');
             return false;
@@ -68,7 +71,8 @@ class FormActions {
         }
     }
 
-    private static function storeSolution($type, $app, &$values) {
+    private static function storeSolution($type, $app, &$values)
+    {
         // prepare
         $values = array(
             'model_id'    => $app->request->post('solution_model_id'),
@@ -94,7 +98,8 @@ class FormActions {
         }
     }
 
-    private static function storeInstance($type, $app, &$values) {
+    private static function storeInstance($type, $app, &$values)
+    {
         // prepare
         $values = array(
             'nb_nodes'   => $app->request->post('instance_nb_nodes'),
@@ -125,7 +130,8 @@ class FormActions {
         }
     }
 
-    private static function storeModel($type, $app, &$values) {
+    private static function storeModel($type, $app, &$values)
+    {
         // prepare
         $values = array(
             'label'      => $app->request->post('model_label'),
