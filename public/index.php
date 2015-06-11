@@ -36,9 +36,12 @@ $app->get('/list/:type', function($type) use ($app) {
         // simple call with all cols
         $data = API::getList($app->db, $type, array('json' => false));
     }
+    $metadata = array(
+        'nb' => count($data)
+    );
 
     $body = 'list_' . $type . '.php';
-    $bodyParams = compact('app', 'data');
+    $bodyParams = compact('app', 'data', 'metadata');
     $jsParams = array('scripts' => array('/js/list.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);

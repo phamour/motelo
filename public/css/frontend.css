@@ -19,6 +19,9 @@ div#container {
 /************************************************/
 
 /********************* List *********************/
+#list_model, #list_instance, #list_solution {
+    margin-bottom: 0px;
+}
 span.status_ok {
     color: #2ecc71;
 }

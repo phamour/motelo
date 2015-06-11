@@ -62,6 +62,12 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+        <div class="panel-footer">
+            <span>
+                <strong><?= $metadata['nb'] ?></strong>
+                &nbsp;result<?= $metadata['nb'] == 1 ? '' : 's' ?>
+            </span>
+        </div>
     <?php endif ?>
 </div>
 
