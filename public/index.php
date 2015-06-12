@@ -49,7 +49,7 @@ $app->get('/list/:type', function($type) use ($app) {
 
 $app->get('/create/:type', function($type) use ($app) {
     $body = 'creation_' . $type . '.php';
-    $bodyParams = array();
+    $bodyParams = compact('app');
     $jsParams = array('scripts' => array('/js/form.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
@@ -69,7 +69,7 @@ $app->get('/edit/:type/:id', function($type, $id) use ($app) {
     }
 
     $body = 'creation_' . $type . '.php';
-    $bodyParams = compact('data');
+    $bodyParams = compact('app', 'data');
     $jsParams = array('scripts' => array('/js/form.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
