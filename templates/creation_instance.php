@@ -43,6 +43,10 @@
             </div>
         </div>
         <div class="panel-footer">
+            <a href="<?= $app->urlFor('list', array('type' => 'instance')) ?>" 
+                class="btn btn-danger" role="button">
+                Cancel
+            </a>
             <button class="btn btn-primary">Submit</button>
         </div>
     </div>

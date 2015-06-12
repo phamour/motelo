@@ -12,7 +12,7 @@ class Utils
 
     public static function renderLayout($app, $body, $bodyParams = array(), $jsParams = array())
     {
-        $app->render('header.php');
+        $app->render('header.php', compact('app'));
         $app->render('flash.php');
         $app->render($body, $bodyParams);
         $app->render('jsincludes.php', $jsParams);

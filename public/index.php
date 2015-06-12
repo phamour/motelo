@@ -25,7 +25,7 @@ $app->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 // Define routes
 $app->get('/', function() use ($app) {
     $app->redirectTo('list', array('type' => 'solution'));
-});
+})->name('root');
 
 $app->get('/list/:type', function($type) use ($app) {
     $data = array();
@@ -36,9 +36,12 @@ $app->get('/list/:type', function($type) use ($app) {
         // simple call with all cols
         $data = API::getList($app->db, $type, array('json' => false));
     }
+    $metadata = array(
+        'nb' => count($data)
+    );
 
     $body = 'list_' . $type . '.php';
-    $bodyParams = compact('app', 'data');
+    $bodyParams = compact('app', 'data', 'metadata');
     $jsParams = array('scripts' => array('/js/list.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
@@ -46,11 +49,11 @@ $app->get('/list/:type', function($type) use ($app) {
 
 $app->get('/create/:type', function($type) use ($app) {
     $body = 'creation_' . $type . '.php';
-    $bodyParams = array();
+    $bodyParams = compact('app');
     $jsParams = array('scripts' => array('/js/form.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
-});
+})->name('create');
 
 $app->post('/create/:type', function($type) use ($app) {
     FormActions::create($app, $type);
@@ -66,7 +69,7 @@ $app->get('/edit/:type/:id', function($type, $id) use ($app) {
     }
 
     $body = 'creation_' . $type . '.php';
-    $bodyParams = compact('data');
+    $bodyParams = compact('app', 'data');
     $jsParams = array('scripts' => array('/js/form.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
