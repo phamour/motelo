@@ -53,7 +53,7 @@ $app->get('/create/:type', function($type) use ($app) {
     $jsParams = array('scripts' => array('/js/form.js'));
 
     Utils::renderLayout($app, $body, $bodyParams, $jsParams);
-});
+})->name('create');
 
 $app->post('/create/:type', function($type) use ($app) {
     FormActions::create($app, $type);

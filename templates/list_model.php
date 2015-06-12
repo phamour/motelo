@@ -2,6 +2,10 @@
     <input type="hidden" id="list_type" value="model">
     <div class="panel-heading">
         List of models
+        <a href="<?= $app->urlFor('create', array('type' => 'model')) ?>" 
+            class="btn btn-success btn-xs" role="button" title="add model">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        </a>
     </div>
     <?php if (count($data) == 0): ?>
         <div class="panel-body">No results</div>

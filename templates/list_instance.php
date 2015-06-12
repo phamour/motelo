@@ -2,6 +2,10 @@
     <input type="hidden" id="list_type" value="instance">
     <div class="panel-heading">
         List of instances
+        <a href="<?= $app->urlFor('create', array('type' => 'instance')) ?>" 
+            class="btn btn-success btn-xs" role="button" title="add instance">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        </a>
     </div>
     <?php if (count($data) == 0): ?>
         <div class="panel-body">No results</div>
