@@ -8,7 +8,7 @@
 
 // Database configurations
 define('DB_DIR',      dirname(__DIR__) . '/database/');
-define('DB_FILENAME', 'dev.sqlite');
+define('DB_FILENAME', 'production.sqlite');
 
 // Application runtime configurations
 define('STORAGE_DIR',            dirname(__DIR__) . '/storage/');
