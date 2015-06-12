@@ -18,7 +18,33 @@
 <body>
     <header id="header" class="container-fluid">
         <nav class="navbar navbar-default">
-            <h1 class="">MOTELO: modelling tests logger</h1>
+            <a class="navbar-brand" href="<?= $app->urlFor('root') ?>">
+                <strong>MOTELO</strong>
+            </a>
+            <div class="collapse navbar-collapse" id="navigation">
+                <ul class="nav navbar-nav">
+                    <li class="<?= preg_match('/\/model/', $app->request->getResourceUri()) ? 'active' : '' ?>">
+                        <a href="<?= $app->urlFor('list', array('type' => 'model')) ?>">
+                            Model
+                        </a>
+                    </li>
+                    <li class="<?= preg_match('/\/instance/', $app->request->getResourceUri()) ? 'active' : '' ?>">
+                        <a href="<?= $app->urlFor('list', array('type' => 'instance')) ?>">
+                            Instance
+                        </a>
+                    </li>
+                    <li class="<?= preg_match('/\/solution/', $app->request->getResourceUri()) ? 'active' : '' ?>">
+                        <a href="<?= $app->urlFor('list', array('type' => 'solution')) ?>">
+                            Solution
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Performance<sup style="color: red;"><em>planned</em></sup>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </header>
 

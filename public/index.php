@@ -25,7 +25,7 @@ $app->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 // Define routes
 $app->get('/', function() use ($app) {
     $app->redirectTo('list', array('type' => 'solution'));
-});
+})->name('root');
 
 $app->get('/list/:type', function($type) use ($app) {
     $data = array();
