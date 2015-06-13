@@ -119,6 +119,9 @@ $.ajax({
         // highlight blockage
         cyTestgraph.getElementById(dat.blockage[0] + '-' + dat.blockage[1])
             .addClass('blockage');
+
+        // hide loading image
+        $('#test_case .loading_img').hide();
     }
 });
 
@@ -155,6 +158,9 @@ if ($('#result_graph') !== undefined) {
                         .addClass('reversal');
                 }
             }
+
+            // hide loading image
+            $('#result_graph .loading_img').hide();
         }
     });
 }

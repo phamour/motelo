@@ -43,6 +43,12 @@ div.graph_wrapper {
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+div.graph_wrapper img.loading_img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: auto;
+}
 div#result_graph h3, div#result_graph div {
     padding: 0;
 }
