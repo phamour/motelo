@@ -10,7 +10,9 @@
 <div class="row">
     <div id="test_case" class="col-md-4">
         <h3>Tested graph:</h3>
-        <div class="graph_wrapper"></div>
+        <div class="graph_wrapper">
+            <img class="loading_img" src="/img/loading.gif">
+        </div>
     </div>
     <div class="holder col-md-4"></div>
     <div id="instance_content" class="col-md-4">
