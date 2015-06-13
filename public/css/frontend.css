@@ -34,6 +34,13 @@ a.list_action {
 form.list_action {
     display: inline;
 }
+#file_content_modal pre {
+    display: none;
+}
+#file_content_modal .loading_img {
+    width: 50%;
+    height: 50%;
+}
 /************************************************/
 
 /**************** View solution *****************/
