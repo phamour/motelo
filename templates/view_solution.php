@@ -11,7 +11,9 @@
 <div class="row">
     <div id="test_case" class="col-md-4">
         <h3>Tested graph:</h3>
-        <div class="graph_wrapper"></div>
+        <div class="graph_wrapper">
+            <img class="loading_img" src="/img/loading.gif">
+        </div>
     </div>
     <div id="result_graph" class="col-md-4">
         <h3 class="col-md-9">Result graph:</h3>
@@ -20,7 +22,9 @@
                 <option>OD pairs</option>
             </select>
         </div>
-        <div class="graph_wrapper col-md-12"></div>
+        <div class="graph_wrapper col-md-12">
+            <img class="loading_img" src="/img/loading.gif">
+        </div>
     </div>
     <div id="result_content" class="col-md-4">
         <h3>Result file content:</h3>
