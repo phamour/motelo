@@ -20,7 +20,7 @@
     <header id="header" class="container-fluid">
         <nav class="navbar navbar-default">
             <a class="navbar-brand" href="<?= $app->urlFor('root') ?>">
-                <strong>MOTELO</strong>
+                <img src="/img/logo.png" alt="MOTELO" title="MOTELO: modelling tests logger">
             </a>
             <div class="collapse navbar-collapse" id="navigation">
                 <ul class="nav navbar-nav">
