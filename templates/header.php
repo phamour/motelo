@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOTELO: modelling tests logger</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
 
     <!-- Libraries -->
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
