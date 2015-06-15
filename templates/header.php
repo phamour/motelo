@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOTELO: modelling tests logger</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
 
     <!-- Libraries -->
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
@@ -19,7 +20,7 @@
     <header id="header" class="container-fluid">
         <nav class="navbar navbar-default">
             <a class="navbar-brand" href="<?= $app->urlFor('root') ?>">
-                <strong>MOTELO</strong>
+                <img src="/img/logo.png" alt="MOTELO" title="MOTELO: modelling tests logger">
             </a>
             <div class="collapse navbar-collapse" id="navigation">
                 <ul class="nav navbar-nav">
