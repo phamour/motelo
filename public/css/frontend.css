@@ -16,6 +16,12 @@ footer {
 div#container {
     /*border: 2px dotted #000;*/
 }
+header .navbar-brand {
+    padding-top: 10px !important;
+}
+header .navbar-brand img {
+    display: inline;
+}
 /************************************************/
 
 /********************* List *********************/
