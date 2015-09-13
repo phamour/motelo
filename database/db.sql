@@ -20,6 +20,7 @@ CREATE TABLE "instance" (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`filename`	TEXT NOT NULL UNIQUE,
 	`created_at`	DATETIME NOT NULL,
+	`label`	TEXT NOT NULL UNIQUE,
 	`nb_nodes`	INTEGER NOT NULL,
 	`nb_edges`	INTEGER NOT NULL,
 	`blockage_o`	INTEGER,
