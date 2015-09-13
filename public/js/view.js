@@ -151,6 +151,15 @@ if ($('#result_graph') !== undefined) {
                 .addClass('blockage');
 
             // highlight reversals
+            for (var i in sol.x) {
+                for (var j in sol.x[i]) {
+                    if (sol.x[i][j] === '1') {
+                        cyResultgraph.getElementById(i + '-' + j)
+                            .removeClass('normal_edge')
+                            .addClass('reversal');
+                    }
+                }
+            }
             if (sol.x.length > 0) {
                 for (var i = 0; i < sol.x.length; i++) {
                     cyResultgraph.getElementById(sol.x[i][0] + '-' + sol.x[i][1])
