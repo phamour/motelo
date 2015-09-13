@@ -215,14 +215,14 @@ class API
         // match
         preg_match_all($pattern, $source, $matches);
 
-        // parse match result
+        // parse match result (not generic!!!)
         foreach ($matches[0] as $j => $value) {
             if ($matches[$dimension + 1][$j] != '0') {
-                $tmp = array();
-                for ($i = 0; $i <= $dimension; $i++) {
-                    $tmp[] = intval($matches[$i + 1][$j]);
+                if ($dimension == 4) {
+                    $result[$matches[1][$j]][$matches[2][$j]][$matches[3][$j]][$matches[4][$j]] = $matches[5][$j];
+                } else {
+                    $result[$matches[1][$j]][$matches[2][$j]] = $matches[3][$j];
                 }
-                $result[] = $tmp;
             }
         }
         return $result;
