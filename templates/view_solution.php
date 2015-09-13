@@ -19,7 +19,7 @@
         <h3 class="col-md-9">Result graph:</h3>
         <div class="col-md-3">
             <select id="odpairs" class="form-control">
-                <option>OD pairs</option>
+                <option value="">OD pairs</option>
             </select>
         </div>
         <div class="graph_wrapper col-md-12">
