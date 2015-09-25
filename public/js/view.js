@@ -63,7 +63,8 @@ var testgraph = {
         m: 0,
         O: -1,
         D: -1,
-        blockage: []
+        blockage: [],
+        blockages: []
     }
 };
 var resultgraph = {
@@ -74,7 +75,8 @@ var resultgraph = {
         m: 0,
         O: -1,
         D: -1,
-        blockage: []
+        blockage: [],
+        blockages: []
     }
 };
 
@@ -98,6 +100,7 @@ $.ajax({
         testgraph.metadata.O = dat.O;
         testgraph.metadata.D = dat.D;
         testgraph.metadata.blockage = dat.blockage;
+        testgraph.metadata.blockages = dat.blockages;
 
         // parse nodes
         for (var i = 0; i < dat.n; i++) {
@@ -130,13 +133,21 @@ $.ajax({
             style: cyStyle,
             elements: testgraph,
             layout: {
-                name: 'grid'
+                name: 'grid',
+                rows: Math.sqrt(dat.n)
             }
         });
 
-        // highlight blockage
-        cyTestgraph.getElementById(dat.blockage[0] + '-' + dat.blockage[1])
-            .addClass('blocked');
+        // highlight blockages
+        if (dat.blockages !== undefined) {
+            $.each(dat.blockages, function(i, blockage){
+                cyTestgraph.getElementById(blockage[0] + '-' + blockage[1])
+                    .addClass('blocked');
+            });
+        } else if (dat.blockage !== undefined) {
+            cyTestgraph.getElementById(dat.blockage[0] + '-' + dat.blockage[1])
+                .addClass('blocked');
+        }
 
         // hide loading image
         $('#test_case .loading_img').hide();
@@ -160,13 +171,21 @@ if ($('#result_graph') !== undefined) {
                 style: cyStyle,
                 elements: resultgraph,
                 layout: {
-                    name: 'grid'
+                    name: 'grid',
+                    rows: Math.sqrt(resultgraph.metadata.n)
                 }
             });
 
-            // highlight blockage
-            cyResultgraph.getElementById(resultgraph.metadata.blockage[0] + '-' + resultgraph.metadata.blockage[1])
-                .addClass('blocked');
+            // highlight blockages
+            if (resultgraph.metadata.blockages !== undefined) {
+                $.each(resultgraph.metadata.blockages, function(i, blockage){
+                    cyResultgraph.getElementById(blockage[0] + '-' + blockage[1])
+                        .addClass('blocked');
+                });
+            } else if (resultgraph.metadata.blockage !== undefined) {
+                cyResultgraph.getElementById(resultgraph.metadata.blockage[0] + '-' + resultgraph.metadata.blockage[1])
+                    .addClass('blocked');
+            }
 
             // highlight reversals
             for (var i in sol.x) {
