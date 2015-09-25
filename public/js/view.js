@@ -130,7 +130,8 @@ $.ajax({
             style: cyStyle,
             elements: testgraph,
             layout: {
-                name: 'grid'
+                name: 'grid',
+                rows: Math.sqrt(dat.n)
             }
         });
 
