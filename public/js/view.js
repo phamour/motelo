@@ -135,8 +135,15 @@ $.ajax({
         });
 
         // highlight blockage
-        cyTestgraph.getElementById(dat.blockage[0] + '-' + dat.blockage[1])
-            .addClass('blocked');
+        if (dat.blockages !== undefined) {
+            $.each(dat.blockages, function(i, blockage){
+                cyTestgraph.getElementById(blockage[0] + '-' + blockage[1])
+                    .addClass('blocked');
+            });
+        } else if (dat.blockage !== undefined) {
+            cyTestgraph.getElementById(dat.blockage[0] + '-' + dat.blockage[1])
+                .addClass('blocked');
+        }
 
         // hide loading image
         $('#test_case .loading_img').hide();

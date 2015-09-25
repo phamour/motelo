@@ -161,8 +161,10 @@ class API
             $source = substr($source, 0, strlen($source) - 1);
         }
 
-        // parse arcs
+        // parse attributes
         $source = preg_replace('/"arcs":{([<>0-9,]+)}/', '"arcs":[${1}]', $source);
+        $source = preg_replace('/"requests":{([<>0-9,]+)}/', '"requests":[${1}]', $source);
+        $source = preg_replace('/"blockages":{([<>0-9,]+)}/', '"blockages":[${1}]', $source);
         $source = preg_replace('/<([0-9]+,[0-9]+,[0-9.]+)>/', '[${1}]', $source);
 
         $data = json_decode('{' . $source . '}', true);
