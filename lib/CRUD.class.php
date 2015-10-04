@@ -108,11 +108,11 @@ class CRUD
     }
 
     // D
-    // NOTE: strictly do soft delete for the reason of history keeping
-    public static function softDelete(PDO $db, $tablename, $id)
+    // NOTE: do hard delete for safety reasons
+    // TODO: make a choice for user to soft or hard delete an element
+    public static function delete(PDO $db, $tablename, $id)
     {
-        $sql = 'UPDATE ' . $tablename . ' ' . 
-            'SET status=0 ' . 
+        $sql = 'DELETE FROM ' . $tablename . ' ' .
             'WHERE id=' . $id;
 
         return $db->exec($sql) === 1;
