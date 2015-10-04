@@ -62,7 +62,20 @@ class FormActions
 
     public static function delete($app, $type, $id)
     {
-        if (CRUD::softDelete($app->db, $type, $id) == false) {
+        // get the filename of the element to be deleted
+        $filename = CRUD::select($app->db, array(
+            'table' => $type,
+            'fields' => 'filename',
+            'where' => 'id=' . $id,
+            'limit' => 1
+        ))[0]['filename'];
+
+        // hard delete the file in storage
+        // harddelete the data row in db
+        $ok = Uploader::unlink($type, $filename)
+            && CRUD::delete($app->db, $type, $id);
+
+        if (!$ok) {
             Utils::yflash('error', 'Failed to delete ' . $type . '.');
             return false;
         } else {

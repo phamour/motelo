@@ -11,6 +11,22 @@ class Uploader
         $path = STORAGE_DIR . $type . '/' . $file[$name]['name'];
 
         // unify ext
+        $path = str_replace('.txt', self::getExtByType($type), $path);
+
+        return !file_exists($path) && move_uploaded_file($file[$name]['tmp_name'], $path);
+    }
+
+    public static function unlink($type, $filename)
+    {
+        $ext = self::getExtByType($type);
+
+        $path = STORAGE_DIR . $type . '/' . $filename . $ext;
+        
+        return file_exists($path) && unlink($path);
+    }
+
+    private static function getExtByType($type)
+    {
         $ext = '.txt';
         switch ($type) {
             default:
@@ -24,9 +40,7 @@ class Uploader
                 $ext = '.mod';
                 break;
         }
-        $path = str_replace('.txt', $ext, $path);
-
-        return !file_exists($path) && move_uploaded_file($file[$name]['tmp_name'], $path);
+        return $ext;
     }
 }
 
