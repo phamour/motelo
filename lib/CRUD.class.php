@@ -111,8 +111,10 @@ class CRUD
     // NOTE: strictly do soft delete for the reason of history keeping
     public static function softDelete(PDO $db, $tablename, $id)
     {
-        $sql = 'UPDATE ' . $tablename . ' ' . 
-            'SET status=0 ' . 
+        $sql = 'UPDATE ' . $tablename . ' ' .
+            'SET status = 0, ' .
+            'filename = filename || \'_bak\', ' .
+            'label = label || \'_bak\' ' .
             'WHERE id=' . $id;
 
         return $db->exec($sql) === 1;
